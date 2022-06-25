@@ -6,7 +6,7 @@ import java.awt.Graphics;
 public class Paddle {
 
 	public int paddleNumber;
-	public int x, y, width = 100, height = 500;
+	public int x, y, width = 50, height = 250;
 	public int score;
 
 	public Paddle(Pong pong, int paddleNumber) {
@@ -26,6 +26,26 @@ public class Paddle {
 
 		g.setColor(Color.white);
 		g.fillRect(x, y, width, height);
+	}
+
+	public void move(boolean up) {
+
+		int speed = 15;
+
+		if (up) {
+			if (y - speed > 0) {
+				y -= speed;
+			} else {
+				y = 0;
+			}
+		} else {
+			if (y + height + speed < Pong.pong.height) {
+				y += speed;
+			} else {
+				y = Pong.pong.height - height;
+			}
+		}
+
 	}
 
 }

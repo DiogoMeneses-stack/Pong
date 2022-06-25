@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class Pong implements ActionListener {
+public class Pong implements ActionListener, KeyListener {
 
 	public static Pong pong;
 
@@ -20,6 +22,10 @@ public class Pong implements ActionListener {
 
 	public Paddle player2;
 
+	public boolean bot = false;
+
+	public boolean w, s, up, down;
+
 	public Pong() {
 
 		Timer timer = new Timer(20, this);
@@ -27,11 +33,11 @@ public class Pong implements ActionListener {
 
 		renderer = new Renderer();
 
-		jframe.setSize(width, height);
+		jframe.setSize(width + 15, height);
 		jframe.setVisible(true);
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframe.add(renderer);
-
+		jframe.addKeyListener(this);
 		start();
 
 		timer.start();
@@ -43,14 +49,29 @@ public class Pong implements ActionListener {
 	}
 
 	public void update() {
-
+		if(w) {
+			player1.move(true);
+		}
+		if(s) {
+			player1.move(false);
+		}
+		if(up) {
+			player2.move(true);
+		}
+		if(down) {
+			player2.move(false);
+		}
+		
 	}
 
 	public void render(Graphics g) {
 
 		g.setColor(Color.black);
 		g.fillRect(0, 0, width, height);
-
+		
+		g.setColor(Color.white);
+		g.drawLine(width / 2, 0, width / 2, height);
+		
 		player1.render(g);
 		player2.render(g);
 
@@ -65,6 +86,48 @@ public class Pong implements ActionListener {
 
 	public static void main(String args[]) {
 		pong = new Pong();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		int id = e.getKeyCode();
+
+		if (id == KeyEvent.VK_W) {
+			w = true;
+		}
+		if (id == KeyEvent.VK_S) {
+			s = true;
+		}
+		if (id == KeyEvent.VK_UP) {
+			up = true;
+		}
+		if (id == KeyEvent.VK_DOWN) {
+			down = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		int id = e.getKeyCode();
+
+		if (id == KeyEvent.VK_W) {
+			w = false;
+		}
+		if (id == KeyEvent.VK_S) {
+			s = false;
+		}
+		if (id == KeyEvent.VK_UP) {
+			up = false;
+		}
+		if (id == KeyEvent.VK_DOWN) {
+			down = false;
+		}
+
 	}
 
 }
